@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>넥센타이어 GEO 초기 진단 리포트 — MAD Corporation</title>
+<link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" rel="stylesheet">
+<style>
+:root{--bg:#EDEEF3;--surface:#FFF;--text-1:#1E1E2D;--text-2:#5A5B6A;--text-3:#9394A1;--blue:#4A7CFF;--red:#F06060;--amber:#F0A840;--green:#3EBB7A;--shadow:0 1px 3px rgba(30,30,60,.04),0 4px 12px rgba(30,30,60,.03);--shadow-md:0 2px 8px rgba(30,30,60,.05),0 8px 24px rgba(30,30,60,.06);--r:20px;--rs:14px}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Pretendard Variable',-apple-system,sans-serif;background:var(--bg);color:var(--text-1);line-height:1.6;-webkit-font-smoothing:antialiased;padding:32px}
+.rpt{max-width:1040px;margin:0 auto}
+.mb{margin-bottom:20px}
+
+/* ── Header ── */
+.hdr{background:var(--surface);border-radius:var(--r);box-shadow:var(--shadow);padding:32px 36px;display:flex;justify-content:space-between;align-items:center}
+.hdr-left{display:flex;align-items:center;gap:16px}
+.hdr-icon{width:44px;height:44px;border-radius:14px;background:linear-gradient(135deg,#4A7CFF,#6C9BFF);display:flex;align-items:center;justify-content:center}
+.hdr-icon svg{width:22px;height:22px;fill:#fff}
+.hdr h1{font-size:18px;font-weight:700;letter-spacing:-.02em}
+.hdr .sub{font-size:13px;color:var(--text-3);margin-top:2px}
+.hdr-meta{display:flex;gap:28px}
+.meta-b{text-align:right}
+.meta-b .l{font-size:11px;color:var(--text-3);font-weight:500}
+.meta-b .v{font-size:13px;font-weight:600}
+
+/* ── Cards ── */
+.card{background:var(--surface);border-radius:var(--r);box-shadow:var(--shadow);padding:28px}
+.cl{font-size:11px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--text-3);margin-bottom:4px}
+.ct{font-size:15px;font-weight:700;margin-bottom:20px}
+
+/* ── Grids ── */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px}
+
+/* ── KPI Gradient Cards ── */
+.kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.kpi{border-radius:var(--rs);padding:24px;position:relative}
+.kpi.g1{background:linear-gradient(135deg,#E8F0FE,#C2DBFF)}
+.kpi.g2{background:linear-gradient(135deg,#FFF0E8,#FFD4B8)}
+.kpi.g3{background:linear-gradient(135deg,#E8FFF0,#B8FFD4)}
+.kpi.g4{background:linear-gradient(135deg,#F0E8FF,#D4B8FF)}
+.kpi-ic{width:32px;height:32px;border-radius:10px;background:rgba(255,255,255,.7);display:flex;align-items:center;justify-content:center;margin-bottom:16px;font-size:14px}
+.kpi .nm{font-size:12px;font-weight:600;color:var(--text-2);margin-bottom:8px}
+.kpi .vl{font-size:28px;font-weight:800;letter-spacing:-.03em;line-height:1;margin-bottom:6px}
+.kpi .ds{font-size:11px;color:var(--text-3)}
+
+/* ── Bar groups ── */
+.bar-g{display:flex;flex-direction:column;gap:5px}
+.bar-r{display:flex;align-items:center;gap:8px}
+.bar-l{font-size:10px;color:var(--text-3);width:40px;text-align:right;flex-shrink:0}
+.bar-t{flex:1;height:6px;background:#F0F0F5;border-radius:3px;overflow:hidden}
+.bar-f{height:100%;border-radius:3px}
+.bar-f.self{background:var(--blue)}
+.bar-f.ca{background:#F06060;opacity:.6}
+.bar-f.cb{background:#9394A1;opacity:.4}
+.bar-v{font-size:10px;font-weight:600;color:var(--text-2);width:34px;flex-shrink:0}
+
+/* ── Platform inline ── */
+.plat{padding:14px 0;border-bottom:1px solid #F0F0F5}
+.plat:last-child{border-bottom:none;padding-bottom:0}
+.plat:first-child{padding-top:0}
+.plat-top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px}
+.plat-nm{font-size:13px;font-weight:600}
+.plat-vl{font-size:18px;font-weight:800}
+.plat-vl.low{color:var(--red)}
+
+/* ── Readiness badges ── */
+.rbg{display:flex;gap:12px;margin-bottom:20px}
+.rb{display:flex;align-items:center;gap:8px;padding:10px 18px;border-radius:12px;font-size:13px;font-weight:600}
+.rb .n{font-size:20px;font-weight:800;line-height:1}
+.rb.pass{background:#ECFDF3;color:#15803D}
+.rb.warn{background:#FFFBEB;color:#B45309}
+.rb.fail{background:#FFF1F1;color:#DC2626}
+
+/* ── Checklist ── */
+.chk{display:flex;flex-direction:column;gap:2px}
+.chk-r{display:flex;align-items:center;gap:14px;padding:12px 16px;border-radius:12px;background:#F8F8FB}
+.chk-d{width:24px;height:24px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;flex-shrink:0}
+.chk-d.p{background:var(--green)}.chk-d.w{background:var(--amber)}.chk-d.f{background:var(--red)}
+.chk-t{flex:1;font-size:13px;font-weight:500}
+.chk-n{font-size:11px;color:var(--text-3);text-align:right}
+
+/* ── Finding ── */
+.find{background:linear-gradient(135deg,#4A7CFF,#6C5CE7);border-radius:var(--r);padding:32px 36px;color:#fff;position:relative;overflow:hidden}
+.find::after{content:'';position:absolute;top:-40px;right:-40px;width:160px;height:160px;border-radius:50%;background:rgba(255,255,255,.06)}
+.find .fl{font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;opacity:.7;margin-bottom:12px}
+.find .fm{font-size:17px;font-weight:600;line-height:1.7;position:relative;z-index:1}
+.find .fm strong{color:#FFD166;font-weight:700}
+
+/* ── Keyword Table ── */
+.ktb{width:100%;border-collapse:separate;border-spacing:0}
+.ktb th{font-size:11px;font-weight:600;color:var(--text-3);text-align:left;padding:10px 12px;border-bottom:2px solid #EDEEF3;letter-spacing:.03em;text-transform:uppercase}
+.ktb td{font-size:13px;padding:12px;border-bottom:1px solid #F4F4F8;font-weight:500}
+.ktb tr:last-child td{border-bottom:none}
+.tag{display:inline-block;padding:3px 10px;border-radius:6px;font-size:11px;font-weight:600}
+.tag.miss{background:#FFF1F1;color:#DC2626}
+.tag.comp{background:#FFFBEB;color:#B45309}
+.tag.own{background:#ECFDF3;color:#15803D}
+.tag.opp{background:var(--blue);color:#fff;opacity:.15}
+.tag.opp{background:#EBF0FF;color:#4A7CFF}
+
+/* ── Competitor comparison ── */
+.cmp-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:0;font-size:13px}
+.cmp-grid .hd{font-size:11px;font-weight:600;color:var(--text-3);padding:10px 12px;border-bottom:2px solid #EDEEF3;letter-spacing:.03em;text-transform:uppercase}
+.cmp-grid .cell{padding:12px;border-bottom:1px solid #F4F4F8;font-weight:500;display:flex;align-items:center}
+.cmp-grid .cell.label{color:var(--text-2)}
+
+/* ── Roadmap ── */
+.road{display:flex;flex-direction:column;gap:2px}
+.road-item{display:flex;gap:16px;padding:16px;border-radius:12px;background:#F8F8FB}
+.road-num{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;flex-shrink:0}
+.road-num.now{background:var(--green)}
+.road-num.short{background:var(--blue)}
+.road-num.mid{background:var(--amber)}
+.road-body .road-t{font-size:14px;font-weight:600;margin-bottom:2px}
+.road-body .road-d{font-size:12px;color:var(--text-3)}
+
+/* ── Section divider ── */
+.sdiv{display:flex;align-items:center;gap:12px;margin:36px 0 20px}
+.sdiv-line{flex:1;height:1px;background:#DBDCE3}
+.sdiv-text{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text-3)}
+
+/* ── Method card ── */
+.meth{background:#F8F8FB;border-radius:12px;padding:16px 20px;font-size:13px;color:var(--text-2);line-height:1.8}
+.meth strong{color:var(--text-1);font-weight:600}
+
+/* ── Footer ── */
+.ftr{display:flex;justify-content:space-between;align-items:center;padding:24px 4px;margin-top:12px}
+.ftr .fl{font-size:11px;color:var(--text-3);line-height:1.7}
+.ftr .fr{font-size:14px;font-weight:800;letter-spacing:-.02em}
+
+/* ── Responsive ── */
+@media(max-width:860px){.kpi-row{grid-template-columns:repeat(2,1fr)}.g2{grid-template-columns:1fr}.hdr{flex-direction:column;gap:16px;align-items:flex-start}.hdr-meta{gap:16px}.meta-b{text-align:left}}
+@media(max-width:540px){body{padding:16px}.kpi-row{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="rpt">
+
+<!-- ═══════════ HEADER ═══════════ -->
+<div class="hdr mb">
+  <div class="hdr-left">
+    <div class="hdr-icon"><svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div>
+    <div>
+      <h1>넥센타이어 AI 검색 진단</h1>
+      <div class="sub">GEO Intelligence Report · 초기 진단</div>
+    </div>
+  </div>
+  <div class="hdr-meta">
+    <div class="meta-b"><div class="l">분석일</div><div class="v">2026.06.08</div></div>
+    <div class="meta-b"><div class="l">대상</div><div class="v">nexentire.com</div></div>
+    <div class="meta-b"><div class="l">경쟁사</div><div class="v">한국타이어 · 금호타이어</div></div>
+    <div class="meta-b"><div class="l">분석 페이지</div><div class="v">267 중 20개 선별</div></div>
+  </div>
+</div>
+
+<!-- ═══════════ SECTION 1: AI Visibility KPI ═══════════ -->
+<div class="kpi-row mb">
+  <div class="kpi g1"><div class="kpi-ic">📡</div><div class="nm">Share of Voice</div><div class="vl">12.4%</div><div class="ds">핵심 키워드 50개 · AI 5개 플랫폼 기준</div></div>
+  <div class="kpi g2"><div class="kpi-ic">🔗</div><div class="nm">Citation Rate</div><div class="vl">8.2%</div><div class="ds">Perplexity 출처 URL 인용 기준</div></div>
+  <div class="kpi g3"><div class="kpi-ic">📍</div><div class="nm">평균 언급 순서</div><div class="vl">3.4위</div><div class="ds">언급 시 평균 Position</div></div>
+  <div class="kpi g4"><div class="kpi-ic">💬</div><div class="nm">감성 비율</div><div class="vl">긍정 61%</div><div class="ds">중립 30% · 부정 9%</div></div>
+</div>
+
+<!-- ═══════════ SECTION 2: Platform SoV + Readiness ═══════════ -->
+<div class="g2 mb">
+
+  <!-- Platform SoV -->
+  <div class="card">
+    <div class="cl">플랫폼별 Share of Voice</div>
+    <div class="ct">어떤 AI에서 보이고, 어디서 빠져 있는가</div>
+
+    <div class="plat">
+      <div class="plat-top"><span class="plat-nm">ChatGPT</span><span class="plat-vl">14.2%</span></div>
+      <div class="bar-g">
+        <div class="bar-r"><div class="bar-l">넥센</div><div class="bar-t"><div class="bar-f self" style="width:47%"></div></div><div class="bar-v">14.2%</div></div>
+        <div class="bar-r"><div class="bar-l">한국</div><div class="bar-t"><div class="bar-f ca" style="width:74%"></div></div><div class="bar-v">22.1%</div></div>
+        <div class="bar-r"><div class="bar-l">금호</div><div class="bar-t"><div class="bar-f cb" style="width:50%"></div></div><div class="bar-v">15.3%</div></div>
+      </div>
+    </div>
+
+    <div class="plat">
+      <div class="plat-top"><span class="plat-nm">Gemini</span><span class="plat-vl low">8.7%</span></div>
+      <div class="bar-g">
+        <div class="bar-r"><div class="bar-l">넥센</div><div class="bar-t"><div class="bar-f self" style="width:29%"></div></div><div class="bar-v">8.7%</div></div>
+        <div class="bar-r"><div class="bar-l">한국</div><div class="bar-t"><div class="bar-f ca" style="width:80%"></div></div><div class="bar-v">24.0%</div></div>
+        <div class="bar-r"><div class="bar-l">금호</div><div class="bar-t"><div class="bar-f cb" style="width:37%"></div></div><div class="bar-v">11.2%</div></div>
+      </div>
+    </div>
+
+    <div class="plat">
+      <div class="plat-top"><span class="plat-nm">Perplexity</span><span class="plat-vl">15.1%</span></div>
+      <div class="bar-g">
+        <div class="bar-r"><div class="bar-l">넥센</div><div class="bar-t"><div class="bar-f self" style="width:50%"></div></div><div class="bar-v">15.1%</div></div>
+        <div class="bar-r"><div class="bar-l">한국</div><div class="bar-t"><div class="bar-f ca" style="width:65%"></div></div><div class="bar-v">19.5%</div></div>
+        <div class="bar-r"><div class="bar-l">금호</div><div class="bar-t"><div class="bar-f cb" style="width:56%"></div></div><div class="bar-v">16.8%</div></div>
+      </div>
+    </div>
+
+    <div class="plat">
+      <div class="plat-top"><span class="plat-nm">Claude</span><span class="plat-vl">11.2%</span></div>
+      <div class="bar-g">
+        <div class="bar-r"><div class="bar-l">넥센</div><div class="bar-t"><div class="bar-f self" style="width:37%"></div></div><div class="bar-v">11.2%</div></div>
+        <div class="bar-r"><div class="bar-l">한국</div><div class="bar-t"><div class="bar-f ca" style="width:61%"></div></div><div class="bar-v">18.3%</div></div>
+        <div class="bar-r"><div class="bar-l">금호</div><div class="bar-t"><div class="bar-f cb" style="width:45%"></div></div><div class="bar-v">13.4%</div></div>
+      </div>
+    </div>
+
+    <div class="plat">
+      <div class="plat-top"><span class="plat-nm">Google AI Overview</span><span class="plat-vl low">6.3%</span></div>
+      <div class="bar-g">
+        <div class="bar-r"><div class="bar-l">넥센</div><div class="bar-t"><div class="bar-f self" style="width:21%"></div></div><div class="bar-v">6.3%</div></div>
+        <div class="bar-r"><div class="bar-l">한국</div><div class="bar-t"><div class="bar-f ca" style="width:52%"></div></div><div class="bar-v">15.7%</div></div>
+        <div class="bar-r"><div class="bar-l">금호</div><div class="bar-t"><div class="bar-f cb" style="width:30%"></div></div><div class="bar-v">9.1%</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- GEO Readiness -->
+  <div class="card">
+    <div class="cl">GEO 준비도</div>
+    <div class="ct">AI가 이 사이트를 인용할 준비가 되어 있는가</div>
+    <div class="rbg">
+      <div class="rb pass"><span class="n">2</span> 충족</div>
+      <div class="rb warn"><span class="n">2</span> 부분</div>
+      <div class="rb fail"><span class="n">8</span> 미충족</div>
+    </div>
+    <div class="chk">
+      <div class="chk-r"><div class="chk-d p">✓</div><div class="chk-t">AI 크롤러 접근</div><div class="chk-n">GPTBot · ClaudeBot · PerplexityBot 허용</div></div>
+      <div class="chk-r"><div class="chk-d p">✓</div><div class="chk-t">sitemap.xml</div><div class="chk-n">존재함</div></div>
+      <div class="chk-r"><div class="chk-d w">!</div><div class="chk-t">메타 설명 (description)</div><div class="chk-n">홈페이지만 설정 · 하위 페이지 미개별화</div></div>
+      <div class="chk-r"><div class="chk-d w">!</div><div class="chk-t">Open Graph 태그</div><div class="chk-n">홈페이지만 설정 · 하위 미확인</div></div>
+      <div class="chk-r"><div class="chk-d f">✕</div><div class="chk-t">Schema.org 구조화 데이터</div><div class="chk-n">Organization · Product · FAQ 모두 없음</div></div>
+      <div class="chk-r"><div class="chk-d f">✕</div><div class="chk-t">llms.txt</div><div class="chk-n">없음</div></div>
+      <div class="chk-r"><div class="chk-d f">✕</div><div class="chk-t">FAQ 구조화 (FAQPage 스키마)</div><div class="chk-n">없음</div></div>
+      <div class="chk-r"><div class="chk-d f">✕</div><div class="chk-t">발행일 · 수정일 표기</div><div class="chk-n">없음</div></div>
+      <div class="chk-r"><div class="chk-d f">✕</div><div class="chk-t">E-E-A-T 시그널 (작성자 · 출처)</div><div class="chk-n">없음</div></div>
+      <div class="chk-r"><div class="chk-d f">✕</div><div class="chk-t">이미지 alt 텍스트</div><div class="chk-n">2% 미만</div></div>
+      <div class="chk-r"><div class="chk-d f">✕</div><div class="chk-t">결론 선행 · 질문형 소제목</div><div class="chk-n">미충족</div></div>
+      <div class="chk-r"><div class="chk-d f">✕</div><div class="chk-t">제품 비교 콘텐츠</div><div class="chk-n">없음</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ FINDING ═══════════ -->
+<div class="find mb">
+  <div class="fl">핵심 발견</div>
+  <div class="fm">"타이어 추천" 관련 핵심 키워드 50개 기준, 한국타이어는 5개 AI 플랫폼 중 평균 4.2개에서 언급되지만 넥센타이어는 <strong>평균 1.8개에서만 언급</strong>됩니다. 특히 Google AI Overview와 Gemini에서의 격차가 가장 크며, Schema.org 부재와 제품 비교 콘텐츠 부재가 주요 원인으로 판단됩니다.</div>
+</div>
+
+<!-- ═══════════ SECTION 3: AI 인용 키워드 TOP 5 ═══════════ -->
+<div class="sdiv"><div class="sdiv-line"></div><div class="sdiv-text">Section 2 · AI 인용 키워드 분석</div><div class="sdiv-line"></div></div>
+
+<div class="card mb">
+  <div class="cl">AI 인용 상위 키워드</div>
+  <div class="ct">어떤 질문에서 우리가 빠져 있는가</div>
+  <table class="ktb">
+    <thead><tr><th></th><th>키워드</th><th>넥센타이어</th><th>한국타이어</th><th>금호타이어</th><th>상태</th></tr></thead>
+    <tbody>
+      <tr><td style="font-weight:700;color:var(--blue)">1</td><td>타이어 추천</td><td>1/5</td><td>4/5</td><td>3/5</td><td><span class="tag miss">놓치는 중</span></td></tr>
+      <tr><td style="font-weight:700;color:var(--blue)">2</td><td>SUV 타이어 비교</td><td>1/5</td><td>5/5</td><td>2/5</td><td><span class="tag miss">놓치는 중</span></td></tr>
+      <tr><td style="font-weight:700;color:var(--blue)">3</td><td>사계절 타이어 추천</td><td>2/5</td><td>4/5</td><td>3/5</td><td><span class="tag comp">경쟁 열위</span></td></tr>
+      <tr><td style="font-weight:700">4</td><td>전기차 타이어 추천</td><td>3/5</td><td>4/5</td><td>2/5</td><td><span class="tag comp">경쟁 중</span></td></tr>
+      <tr><td style="font-weight:700">5</td><td>넥센타이어 후기</td><td>5/5</td><td>—</td><td>—</td><td><span class="tag own">자사 독점</span></td></tr>
+      <tr><td style="font-weight:700">6</td><td>타이어 교체 시기</td><td>0/5</td><td>1/5</td><td>0/5</td><td><span class="tag opp">기회 영역</span></td></tr>
+      <tr><td style="font-weight:700">7</td><td>타이어 수명 늘리는 법</td><td>0/5</td><td>0/5</td><td>1/5</td><td><span class="tag opp">기회 영역</span></td></tr>
+    </tbody>
+  </table>
+  <div style="margin-top:16px;font-size:11px;color:var(--text-3)">* N/5 = 5개 AI 플랫폼(ChatGPT · Gemini · Perplexity · Claude · AI Overview) 중 브랜드 언급 플랫폼 수</div>
+</div>
+
+<!-- ═══════════ SECTION 3-2: Citation Rate Detail ═══════════ -->
+<div class="g2 mb">
+  <div class="card">
+    <div class="cl">Citation Rate 상세</div>
+    <div class="ct">Perplexity 답변에서 실제 인용된 URL</div>
+    <div style="display:flex;flex-direction:column;gap:12px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 16px;background:#F8F8FB;border-radius:12px">
+        <div><div style="font-size:13px;font-weight:600">/kr/product/ev_root/technology/</div><div style="font-size:11px;color:var(--text-3)">EV Root 기술 페이지</div></div>
+        <div style="font-size:15px;font-weight:700;color:var(--blue)">3회</div>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 16px;background:#F8F8FB;border-radius:12px">
+        <div><div style="font-size:13px;font-weight:600">/kr/product/passenger/nfera-sport.php</div><div style="font-size:11px;color:var(--text-3)">엔페라 스포츠 제품 페이지</div></div>
+        <div style="font-size:15px;font-weight:700;color:var(--blue)">2회</div>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 16px;background:#F8F8FB;border-radius:12px">
+        <div><div style="font-size:13px;font-weight:600">/kr/ (홈페이지)</div><div style="font-size:11px;color:var(--text-3)">메인 페이지</div></div>
+        <div style="font-size:15px;font-weight:700;color:var(--blue)">1회</div>
+      </div>
+    </div>
+    <div style="margin-top:16px;padding:14px 18px;background:#FFF1F1;border-radius:12px;font-size:13px;color:#DC2626;font-weight:500">FAQ, 블로그, 비교 콘텐츠 페이지의 인용은 0건. 정보형 콘텐츠 부재가 Citation Rate 하락의 직접 원인.</div>
+  </div>
+
+  <div class="card">
+    <div class="cl">감성 분석</div>
+    <div class="ct">AI가 넥센타이어를 언급할 때의 톤</div>
+    <div style="display:flex;flex-direction:column;gap:16px;margin-top:8px">
+      <div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:6px"><span style="font-size:13px;font-weight:600">긍정</span><span style="font-size:13px;font-weight:700;color:var(--green)">61%</span></div>
+        <div class="bar-t" style="height:10px;border-radius:5px"><div class="bar-f" style="width:61%;background:var(--green);border-radius:5px"></div></div>
+        <div style="font-size:11px;color:var(--text-3);margin-top:4px">"가성비", "포르쉐 OE 공급", "EV 기술" 맥락</div>
+      </div>
+      <div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:6px"><span style="font-size:13px;font-weight:600">중립</span><span style="font-size:13px;font-weight:700;color:var(--text-3)">30%</span></div>
+        <div class="bar-t" style="height:10px;border-radius:5px"><div class="bar-f" style="width:30%;background:#CBD5E1;border-radius:5px"></div></div>
+        <div style="font-size:11px;color:var(--text-3);margin-top:4px">단순 브랜드 나열, 스펙 비교</div>
+      </div>
+      <div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:6px"><span style="font-size:13px;font-weight:600">부정</span><span style="font-size:13px;font-weight:700;color:var(--red)">9%</span></div>
+        <div class="bar-t" style="height:10px;border-radius:5px"><div class="bar-f" style="width:9%;background:var(--red);border-radius:5px"></div></div>
+        <div style="font-size:11px;color:var(--text-3);margin-top:4px">"브랜드 인지도 낮음", "프리미엄 대비 열위" 맥락</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ SECTION 4: 경쟁사 비교 ═══════════ -->
+<div class="sdiv"><div class="sdiv-line"></div><div class="sdiv-text">Section 3 · 경쟁사 비교</div><div class="sdiv-line"></div></div>
+
+<div class="card mb">
+  <div class="cl">GEO 준비도 비교</div>
+  <div class="ct">넥센타이어 vs 한국타이어 vs 금호타이어</div>
+  <table class="ktb">
+    <thead><tr><th>항목</th><th>넥센타이어</th><th>한국타이어</th><th>금호타이어</th></tr></thead>
+    <tbody>
+      <tr><td>Schema.org</td><td><span class="tag miss">없음</span></td><td><span class="tag own">Organization + Product</span></td><td><span class="tag miss">없음</span></td></tr>
+      <tr><td>llms.txt</td><td><span class="tag miss">없음</span></td><td><span class="tag miss">없음</span></td><td><span class="tag miss">없음</span></td></tr>
+      <tr><td>FAQ 페이지</td><td><span class="tag miss">없음</span></td><td><span class="tag own">있음 (기본)</span></td><td><span class="tag own">있음 (기본)</span></td></tr>
+      <tr><td>E-E-A-T 시그널</td><td><span class="tag miss">없음</span></td><td><span class="tag comp">부분 (뉴스룸)</span></td><td><span class="tag comp">부분 (블로그)</span></td></tr>
+      <tr><td>발행일/수정일</td><td><span class="tag miss">없음</span></td><td><span class="tag own">있음</span></td><td><span class="tag comp">부분</span></td></tr>
+      <tr><td>제품 비교 콘텐츠</td><td><span class="tag miss">없음</span></td><td><span class="tag miss">없음</span></td><td><span class="tag miss">없음</span></td></tr>
+      <tr><td>블로그/콘텐츠 허브</td><td><span class="tag miss">없음</span></td><td><span class="tag own">뉴스룸 운영</span></td><td><span class="tag own">공식 블로그 운영</span></td></tr>
+      <tr><td>Open Graph</td><td><span class="tag comp">홈만 설정</span></td><td><span class="tag own">전체 설정</span></td><td><span class="tag comp">부분 설정</span></td></tr>
+    </tbody>
+  </table>
+  <div style="margin-top:16px;padding:14px 18px;background:#EBF0FF;border-radius:12px;font-size:13px;color:var(--blue);font-weight:500">핵심 인사이트: 3사 모두 llms.txt, 제품 비교 콘텐츠가 부재합니다. 이 영역을 선점하면 경쟁 우위를 가장 빠르게 확보할 수 있습니다.</div>
+</div>
+
+<!-- ═══════════ SECTION 5: 개선 로드맵 ═══════════ -->
+<div class="sdiv"><div class="sdiv-line"></div><div class="sdiv-text">Section 4 · 개선 로드맵</div><div class="sdiv-line"></div></div>
+
+<div class="g2 mb">
+  <div class="card">
+    <div class="cl">즉시 실행 가능</div>
+    <div class="ct" style="color:var(--green)">1~2주 이내</div>
+    <div class="road">
+      <div class="road-item"><div class="road-num now">1</div><div class="road-body"><div class="road-t">llms.txt 생성 및 배포</div><div class="road-d">AI 크롤러가 사이트를 이해하는 요약 문서 · 3사 모두 없으므로 선점 기회</div></div></div>
+      <div class="road-item"><div class="road-num now">2</div><div class="road-body"><div class="road-t">주요 제품 페이지 메타 설명 개별화</div><div class="road-d">현재 홈페이지 description만 설정 · 제품별 고유 설명 필요</div></div></div>
+      <div class="road-item"><div class="road-num now">3</div><div class="road-body"><div class="road-t">이미지 alt 속성 추가</div><div class="road-d">현재 2% 미만 · 검색엔진과 AI 모두에 영향</div></div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="cl">단기 개선</div>
+    <div class="ct" style="color:var(--blue)">1~2개월</div>
+    <div class="road">
+      <div class="road-item"><div class="road-num short">4</div><div class="road-body"><div class="road-t">Schema.org 마크업 적용</div><div class="road-d">Organization · Product · FAQ 스키마 · 한국타이어와의 격차 해소</div></div></div>
+      <div class="road-item"><div class="road-num short">5</div><div class="road-body"><div class="road-t">FAQ 페이지 신규 생성</div><div class="road-d">"타이어 교체 시기", "사계절 vs 겨울 타이어" 등 AI 질문 대응</div></div></div>
+      <div class="road-item"><div class="road-num short">6</div><div class="road-body"><div class="road-t">발행일/수정일 표기 추가</div><div class="road-d">콘텐츠 최신성 시그널 · AI 인용 우선순위에 직접 영향</div></div></div>
+    </div>
+  </div>
+</div>
+
+<div class="card mb">
+  <div class="cl">중기 전략</div>
+  <div class="ct" style="color:var(--amber)">3~6개월</div>
+  <div class="road">
+    <div class="road-item"><div class="road-num mid">7</div><div class="road-body"><div class="road-t">E-E-A-T 강화 (작성자 프로필 · 출처 명시)</div><div class="road-d">전문성 시그널이 AI 인용 가능성을 직접 높임</div></div></div>
+    <div class="road-item"><div class="road-num mid">8</div><div class="road-body"><div class="road-t">제품 비교 콘텐츠 제작</div><div class="road-d">"SUV 타이어 비교", "전기차 타이어 비교" 등 · 3사 모두 없는 선점 영역</div></div></div>
+    <div class="road-item"><div class="road-num mid">9</div><div class="road-body"><div class="road-t">Answer Capsule 구조 콘텐츠 설계</div><div class="road-d">결론 선행 · 질문형 소제목 · 단락 독립성 확보 · AI 인용 최적화</div></div></div>
+  </div>
+</div>
+
+<!-- ═══════════ SECTION 6: 분석 방법론 ═══════════ -->
+<div class="sdiv"><div class="sdiv-line"></div><div class="sdiv-text">부록 · 분석 방법론</div><div class="sdiv-line"></div></div>
+
+<div class="g2 mb">
+  <div class="card">
+    <div class="cl">크롤링 & 페이지 선별</div>
+    <div class="meth">
+      전체 <strong>267개 URL</strong>을 크롤링한 후, 각 페이지의 title · meta description · 본문 첫 300자 · URL 경로를 기반으로 <strong>AI 인용 가능성이 높은 20개 페이지</strong>를 자동 선별하여 상세 분석을 진행했습니다.<br><br>
+      개인정보처리방침, 이용약관, 로그인 등 정보 밀도가 낮은 페이지는 자동 제외됩니다.
+    </div>
+  </div>
+  <div class="card">
+    <div class="cl">AI Visibility 측정</div>
+    <div class="meth">
+      핵심 키워드 <strong>50개</strong> × 5개 AI 플랫폼(ChatGPT · Gemini · Perplexity · Claude · Google AI Overview) × <strong>3회 반복</strong> = 총 750회 질문을 기반으로 브랜드 언급 여부를 카운트했습니다.<br><br>
+      <strong>SoV</strong> = 브랜드 언급 횟수 ÷ 전체 질문 수 × 100<br>
+      <strong>Citation Rate</strong> = Perplexity 출처 URL에 자사 도메인 포함 횟수 ÷ 전체 질문 수 × 100<br>
+      <strong>Position</strong> = 언급 시 순서(1번째 · 2번째 등)의 평균
+    </div>
+  </div>
+</div>
+
+<div class="g2 mb">
+  <div class="card">
+    <div class="cl">준비도 체크리스트</div>
+    <div class="meth">
+      기술 항목(Schema · robots.txt · 메타 태그 등)은 <strong>코드 기반 자동 측정</strong>으로 충족 여부를 판정합니다.<br><br>
+      콘텐츠 항목(E-E-A-T · 결론 선행 구조 등)은 <strong>충족 · 부분 충족 · 미충족</strong> 3단계로 판정하며, 점수화하지 않습니다.
+    </div>
+  </div>
+  <div class="card">
+    <div class="cl">경쟁사 비교</div>
+    <div class="meth">
+      동일 키워드, 동일 AI 플랫폼, 동일 기준으로 자사 및 경쟁사 2개(한국타이어 · 금호타이어)를 측정한 <strong>상대 비교</strong>입니다.<br><br>
+      본 데이터는 측정 시점의 스냅샷이며, AI 모델 업데이트에 따라 수치가 변동될 수 있습니다. <strong>월간 추적</strong>을 통해 추이를 확인하는 것을 권장합니다.
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ FOOTER ═══════════ -->
+<div class="ftr">
+  <div class="fl">본 리포트는 MAD GEO Analysis Engine 크롤링 데이터를<br>기반으로 전문가 검토를 거쳐 작성되었습니다.</div>
+  <div class="fr">MAD Corporation</div>
+</div>
+
+</div>
+</body>
+</html>
