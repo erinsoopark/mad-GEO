@@ -273,19 +273,75 @@ body::before{
 .cl-btn:hover{background:var(--accent-soft)}
 .cl-meta{margin-top:13px;font-size:11px;color:var(--ink-4);font-weight:500;letter-spacing:.03em}
 
+/* ════ RESPONSIVE ════ */
+.tbl-wrap{width:100%}
+
+/* medium screens / small laptops */
+@media(max-width:900px){
+  body{padding:48px 30px}
+  .panel{padding:26px 26px}
+  .hstat{padding-right:22px;margin-right:22px}
+}
+
+/* tablets & large phones */
 @media(max-width:760px){
-  body{padding:36px 22px}
-  .hero{grid-template-columns:1fr;gap:32px}
-  .hero-stats{flex-wrap:wrap;gap:14px 0}
-  .hero-body h1{font-size:30px}
-  .masthead{flex-direction:column;gap:18px}.mh-right{gap:20px;flex-wrap:wrap}
-  .drow{grid-template-columns:1fr auto;gap:8px 14px}
+  body{padding:32px 18px}
+  .wrap{max-width:100%}
+  .panel{padding:22px 18px;border-radius:10px}
+  .eyebrow{margin:34px 0}
+
+  /* masthead stacks */
+  .masthead{flex-direction:column;gap:16px}
+  .mh-right{gap:18px 26px;flex-wrap:wrap}
+
+  /* hero */
+  .hero{grid-template-columns:1fr;gap:30px}
+  .bignum{font-size:84px}
+  .hero-body h1{font-size:28px}
+  .lede{max-width:none}
+  .hero-stats{flex-wrap:wrap;gap:16px 0}
+  .hstat{flex:1 1 30%;padding-right:16px;margin-right:0;min-width:92px}
+  .hstat:nth-child(3){border-right:none}
+
+  /* dumbbell chart → name + gap on top, full-width track below */
+  .chart-head{flex-direction:column;align-items:flex-start;gap:12px;margin:40px 0 4px}
+  .chart-head.ov-head{margin-top:40px;padding-top:34px}
+  .legend{flex-wrap:wrap;gap:10px 16px}
   .chart-scale{display:none}
+  .drow{grid-template-columns:1fr auto;gap:4px 14px;padding:20px 0}
+  .drow .dname{grid-column:1;grid-row:1}
+  .drow .dgap{grid-column:2;grid-row:1;align-self:center}
+  .drow .track{grid-column:1 / -1;grid-row:2;margin-top:8px}
+
+  /* readiness + paired panels stack */
+  .cgrid{grid-template-columns:1fr;gap:18px}
+  .rsum{flex-wrap:wrap;gap:8px}
+  .rmeter-lab{margin-left:0;width:100%;order:-1;margin-bottom:2px}
   .g2,.road{grid-template-columns:1fr}
-  .cgrid{grid-template-columns:1fr}
-  .interlude .fm{font-size:var(--fs-body)}
+
+  /* wide tables → horizontal scroll within panel */
+  .tbl-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:0 -18px;padding:0 18px}
+  .ktable{min-width:520px}
+  .matrix{min-width:560px}
+
+  /* closing */
   .cl-points{grid-template-columns:1fr}
   .cl-cta{gap:14px}
+  .interlude .fm{font-size:var(--fs-body)}
+}
+
+/* phones */
+@media(max-width:430px){
+  body{padding:26px 14px}
+  .bignum{font-size:66px}
+  .hero-body h1{font-size:24px}
+  .mh-client{font-size:15px}
+  .mh-right{gap:14px 22px}
+  .hstat .v{font-size:21px}
+  .rsum{gap:6px}
+  .rchip{min-width:0;flex:1 1 30%;padding:9px 10px}
+  .tbl-wrap{margin:0 -14px;padding:0 14px}
+  .ftr{flex-direction:column;align-items:flex-start;gap:14px}
 }
 </style>
 </head>
@@ -465,6 +521,7 @@ body::before{
       <h2>놓치는 키워드</h2>
       <div class="sub">AI가 추천할 때 넥센타이어가 빠지는 쿼리 (N/5 = 언급한 AI 플랫폼 수/AI 플랫폼 수)</div>
     </div>
+    <div class="tbl-wrap">
     <table class="ktable">
       <thead><tr><th class="kw">키워드</th><th class="c">넥센</th><th class="c">한국</th><th class="c">금호</th><th class="c">미쉐린</th><th>상태</th></tr></thead>
       <tbody>
@@ -477,6 +534,7 @@ body::before{
         <tr><td class="kw">타이어 수명 늘리는 법</td><td class="c num us">0/5</td><td class="c num">0/5</td><td class="c num">1/5</td><td class="c num">0/5</td><td><span class="kbadge opp">기회</span></td></tr>
       </tbody>
     </table>
+    </div>
     <div class="takeaway neg">구매로 직결되는 추천 키워드일수록 넥센의 노출이 비어 있습니다. SUV·전기차 비교에서는 미쉐린까지 상위를 점해 격차가 더 큽니다. <b>"기회" 키워드는 경쟁사 모두 사실상 미점유 상태로, 선점 대상입니다.</b></div>
   </div>
 
@@ -525,6 +583,7 @@ body::before{
       <h2>경쟁사 비교</h2>
       <div class="sub">넥센타이어 기준, 준비 항목별 4사 현황</div>
     </div>
+    <div class="tbl-wrap">
     <table class="matrix">
       <thead><tr><th>항목</th><th class="us uscol">넥센타이어</th><th>한국타이어</th><th>금호타이어</th><th>미쉐린</th></tr></thead>
       <tbody>
@@ -538,6 +597,7 @@ body::before{
         <tr><td class="item">Open Graph</td><td class="uscol"><span class="mtag part">홈만</span></td><td><span class="mtag yes">전체</span></td><td><span class="mtag part">부분</span></td><td><span class="mtag yes">전체</span></td></tr>
       </tbody>
     </table>
+    </div>
     <div class="takeaway pos">llms.txt와 국내향 제품 비교 콘텐츠는 <b>4사 모두 비어 있습니다.</b> 먼저 채우면 미쉐린·한국보다 앞서 우위를 잡을 수 있습니다.</div>
   </div>
 
@@ -597,7 +657,7 @@ body::before{
     </div>
     <p class="cl-sub">세 영역 모두 넥센뿐 아니라 경쟁사도 아직 비워 둔 자리입니다.<br>지금 먼저 채우면 AI 답변에서 먼저 인용됩니다.</p>
     <div class="cl-cta">
-      <a class="cl-btn" href="/cdn-cgi/l/email-protection#c4a7abaab0a5a7b084a9a5a0a7abb6b4eaa7abeaafb6fbb7b1a6aea1a7b0f983818be4284064286454e42864402f5a71e42f6b7c294841e4285e50287669">선점 전략 미팅 요청하기</a>
+      <a class="cl-btn" href="/cdn-cgi/l/email-protection#bbd8d4d5cfdad8cffbd6dadfd8d4c9cb95d8d495d0c984c8ced9d1ded8cf86fcfef49b573f1b571b2b9b571b3f50250e9b50140356373e9b57212f570916">선점 전략 미팅 요청하기</a>
     </div>
     <div class="cl-meta">30분 · 온라인 · 무료</div>
   </div>
